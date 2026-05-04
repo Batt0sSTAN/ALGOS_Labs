@@ -14,13 +14,13 @@ def generate_array(n): #генерация массива
     arr.sort()
     return arr
 
-def measure_time(func, data): #измерение времени
-    start = time.perf_counter()
+def measure_time_and_mem(func, data): 
+    start = time.perf_counter() #измерение времени
     result = func(data)
     end = time.perf_counter()
     time_t = end - start
 
-    mem = sys.getsizeof(result)
+    mem = sys.getsizeof(result) #измерение памяти
     for item in result:
         mem += sys.getsizeof(item)
     return time_t, mem
@@ -30,5 +30,5 @@ if __name__ == '__main__':
     sizes = [100, 1000, 5000, 10000]
     for n in sizes:
         arr = generate_array(n)
-        t, mem = measure_time(task5, arr)
+        t, mem = measure_time_and_mem(task5, arr)
         print(f"{n}     {t:.6f}    {mem}")
