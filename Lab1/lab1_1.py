@@ -6,19 +6,19 @@ def task1(arr, target): #проверка наличия элемента в м�
             return True
     return False
 
-def generate_array(n):
+def generate_array(n): #генерация массива
     arr = []
     for i in range(n):
         arr.append(random.randint(0, 10000))
     return arr
 
-def measure_time(func, data, target):
+def measure_time(func, data, target): #измерениее времени
     start = time.perf_counter()
     func(data, target)
     end = time.perf_counter()
     return end - start
 
-if __name__ == '__main__':
+if __name__ == '__main__': 
     sizes = [100, 1000, 5000, 10000]
     for n in sizes:
         arr = generate_array(n)
