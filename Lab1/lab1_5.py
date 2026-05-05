@@ -14,10 +14,9 @@ def generate_array(n): #генерация массива
     arr.sort()
     return arr
 
-def measure_memory(func, data): #измерение памяти
+def measure_memory(func, data):
     tracemalloc.start()
-    tracemalloc.clear_traces()
-    result = func(data)
+    func(data)
     current, peak = tracemalloc.get_traced_memory()
     tracemalloc.stop()
     return peak
@@ -30,7 +29,7 @@ def measure_time(func, data):#измерение времени
 
 
 if __name__ == '__main__':
-    sizes = [100, 1000, 5000, 10000]
+    sizes = [10000]
     for n in sizes:
         arr = generate_array(n)
         t, mem = measure_time(task5, arr), measure_memory(task5, arr)
