@@ -1,6 +1,6 @@
-import time, random, sys
+import time, random, sys, tracemalloc
 
-def task5(arr): #Бинарный поиск
+def task5(arr): #Сортировка пузырьком
     for i in range(len(arr)):
         for j in range(len(arr) - i - 1):
             if arr[j] > arr[j + 1]:
@@ -14,21 +14,24 @@ def generate_array(n): #генерация массива
     arr.sort()
     return arr
 
-def measure_time_and_mem(func, data): 
-    start = time.perf_counter() #измерение времени
+def measure_memory(func, data): #измерение памяти
+    tracemalloc.start()
+    tracemalloc.clear_traces()
+    result = func(data)
+    current, peak = tracemalloc.get_traced_memory()
+    tracemalloc.stop()
+    return peak
+
+def measure_time(func, data):#измерение времени
+    start = time.perf_counter() 
     result = func(data)
     end = time.perf_counter()
-    time_t = end - start
-
-    mem = sys.getsizeof(result) #измерение памяти
-    for item in result:
-        mem += sys.getsizeof(item)
-    return time_t, mem
+    return end - start
 
 
 if __name__ == '__main__':
     sizes = [100, 1000, 5000, 10000]
     for n in sizes:
         arr = generate_array(n)
-        t, mem = measure_time_and_mem(task5, arr)
+        t, mem = measure_time(task5, arr), measure_memory(task5, arr)
         print(f"{n}     {t:.6f}    {mem}")
