@@ -49,7 +49,7 @@ class HistoryNode:
 class BrowserHistory:
 
     def __init__(self):
-        self._all_history = []
+        self.all_history = []
         self.current = None
 
     def visit(self, url: str, is_bookmark: bool = False):
@@ -58,7 +58,7 @@ class BrowserHistory:
             return
 
         new_node = HistoryNode(url, is_bookmark)
-        self._all_history.append(new_node)
+        self.all_history.append(new_node)
 
         # Если это первая запись в сессии навигации
         if not self.current:
@@ -91,7 +91,7 @@ class BrowserHistory:
 
     def clear_history(self):
         """Очистка всей истории."""
-        self._all_history.clear()
+        self.all_history.clear()
         self.current = None
         print("История успешно очищена.")
 
@@ -101,7 +101,7 @@ class BrowserHistory:
             print("Ошибка: Ключевое слово для поиска не может быть пустым.")
             return
 
-        filtered = [node for node in self._all_history if domain_keyword.lower() in node.domain.lower()]
+        filtered = [node for node in self.all_history if domain_keyword.lower() in node.domain.lower()]
         
         print(f"\nРезультаты поиска по домену '{domain_keyword}':")
         self._print_table(filtered)
@@ -109,18 +109,18 @@ class BrowserHistory:
     def display_full_history(self):
         """Вывод всей истории в виде таблицы."""
         print("\n=== ПОЛНАЯ ИСТОРИЯ ПОСЕЩЕНИЙ ===")
-        self._print_table(self._all_history)
+        self._print_table(self.all_history)
 
     def get_top_transitions(self, n: int = 3):
         """Аналитика: Топ-N частых переходов между доменами."""
-        if len(self._all_history) < 2:
+        if len(self.all_history) < 2:
             print("\nНедостаточно данных для формирования переходов.")
             return
 
         transitions = []
-        for i in range(len(self._all_history) - 1):
-            from_domain = self._all_history[i].domain
-            to_domain = self._all_history[i+1].domain
+        for i in range(len(self.all_history) - 1):
+            from_domain = self.all_history[i].domain
+            to_domain = self.all_history[i+1].domain
             # Исключаем переходы на самого себя, если это необходимо по логике
             if from_domain != to_domain:
                 transitions.append((from_domain, to_domain))
