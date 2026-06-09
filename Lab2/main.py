@@ -5,24 +5,19 @@ from urllib.parse import urlparse
 
 class Counter:
     def __init__(self, iterable=None):
-        # Используем обычный словарь для хранения: {элемент: количество}
         self.counts = {}
         
         if iterable is not None:
             self.update(iterable)
 
     def update(self, iterable):
-        """Добавляет элементы из переданного списка в счетчик."""
         for item in iterable:
-            # Если элемент уже есть, увеличиваем счетчик. 
-            # Если нет — прописываем 1.
             if item in self.counts:
                 self.counts[item] += 1
             else:
                 self.counts[item] = 1
 
     def get(self, item) -> int:
-        """Безопасное получение количества. Если элемента нет, вернет 0."""
         return self.counts.get(item, 0)
 
     def most_common(self, n: int) -> list:
@@ -60,11 +55,9 @@ class BrowserHistory:
         new_node = HistoryNode(url, is_bookmark)
         self.all_history.append(new_node)
 
-        # Если это первая запись в сессии навигации
         if not self.current:
             self.current = new_node
         else:
-            # Отрезаем "вперед", если мы вернулись назад и перешли по новому URL
             self.current.next = new_node
             new_node.prev = self.current
             self.current = new_node
@@ -90,13 +83,11 @@ class BrowserHistory:
         return self.current.url
 
     def clear_history(self):
-        """Очистка всей истории."""
         self.all_history.clear()
         self.current = None
         print("История успешно очищена.")
 
     def search_by_domain(self, domain_keyword: str):
-        """Поиск записей по вхождению ключевого слова в домен."""
         if not domain_keyword:
             print("Ошибка: Ключевое слово для поиска не может быть пустым.")
             return
@@ -112,7 +103,6 @@ class BrowserHistory:
         self._print_table(self.all_history)
 
     def get_top_transitions(self, n: int = 3):
-        """Аналитика: Топ-N частых переходов между доменами."""
         if len(self.all_history) < 2:
             print("\nНедостаточно данных для формирования переходов.")
             return
@@ -144,15 +134,12 @@ class BrowserHistory:
             print("История пуста.")
             return
 
-        # Заголовки и определение ширины колонок
         col_url = "URL"
         col_time = "Время посещения"
         col_bm = "Закладка"
 
-        # Динамически вычисляем ширину для URL, но не меньше 20 символов
         max_url_len = max(max(len(node.url) for node in nodes_list), len(col_url))
-        
-        # Шапка таблицы
+
         header = f"| {col_url:<{max_url_len}} | {col_time:<20} | {col_bm:<10} |"
         separator = "-" * len(header)
         
@@ -162,7 +149,6 @@ class BrowserHistory:
         
         for node in nodes_list:
             bookmark_status = "Да" if node.is_bookmark else "Нет"
-            # Подсветка текущей позиции в истории (опционально для удобства)
             current_marker = " <(Текущая)" if node == self.current else ""
             
             print(f"| {node.url:<{max_url_len}} | {node.timestamp:<20} | {bookmark_status:<10} |{current_marker}")
@@ -170,9 +156,6 @@ class BrowserHistory:
         print(separator)
 
 
-# ==========================================
-# Демонстрация работы и проверка кейсов
-# ==========================================
 if __name__ == "__main__":
     browser = BrowserHistory()
 
@@ -198,7 +181,7 @@ if __name__ == "__main__":
     browser.back()     
     browser.forward()  
 
-    # Переход по новому адресу из "середины" истории
+    # Переход по новому адресу
     browser.visit("youtube.com") 
     browser.display_full_history()
     browser.forward()  # Вперед идти некуда
@@ -208,7 +191,6 @@ if __name__ == "__main__":
     browser.search_by_domain("google")
 
     # 4. Топ-N переходов
-    # Наш трек доменов: google -> github -> habr -> google -> youtube
     browser.get_top_transitions(3)
 
     # 5. Очистка
