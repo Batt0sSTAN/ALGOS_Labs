@@ -129,7 +129,6 @@ class BrowserHistory:
             print(f"{src:<15} -> {dest:<15} | {count:<5}")
 
     def _print_table(self, nodes_list):
-        """Вспомогательный метод для красивого вывода данных в виде таблицы."""
         if not nodes_list:
             print("История пуста.")
             return
